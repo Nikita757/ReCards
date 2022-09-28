@@ -12,14 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.selectUser = exports.insertUser = void 0;
 const pg_1 = require("pg");
 const config_1 = require("../config/config");
-const credentials = {
-    user: "postgres",
-    host: config_1.DB_HOST,
-    database: config_1.DB_NAME,
-    password: config_1.DB_PASSWORD,
-    port: 5432,
-};
-const client = new pg_1.Client(credentials);
+const client = new pg_1.Client(config_1.DB_URI);
 (() => __awaiter(void 0, void 0, void 0, function* () { return yield client.connect(); }))();
 function insertUser({ username, email, password, salt, }) {
     return __awaiter(this, void 0, void 0, function* () {

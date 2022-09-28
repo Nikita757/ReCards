@@ -1,15 +1,7 @@
 import { Client } from "pg";
-import { DB_HOST, DB_NAME, DB_PASSWORD } from "../config/config";
+import { DB_URI } from "../config/config";
 
-const credentials = {
-  user: "postgres",
-  host: DB_HOST,
-  database: DB_NAME,
-  password: DB_PASSWORD,
-  port: 5432,
-};
-
-const client = new Client(credentials);
+const client = new Client(DB_URI);
 (async () => await client.connect())();
 
 export async function insertUser({
