@@ -25,6 +25,7 @@ export async function register(user: { email: string, username: string, password
             `${API_URL}/register`, user, {
             headers: {
                 "Content-Type": "application/json",
+                "Credentials": true
             }
         });
     } catch (err) {
