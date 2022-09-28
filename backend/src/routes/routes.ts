@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { login, logout, dashboard } from "../controllers/controllers";
+import { login, logout, register, dashboard } from "../controllers/controllers";
 
 export const userRouter = express.Router();
 
@@ -15,8 +15,10 @@ userRouter.use(cors(CorsOptions));
 
 userRouter.post("/login", login);
 
-userRouter.get("/logout", logout);
+userRouter.post("/register", register);
 
-userRouter.get("/", dashboard);
+userRouter.post("/logout", logout);
+
+userRouter.get("/dashboard", dashboard);
 
 export default userRouter;

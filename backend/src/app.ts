@@ -1,24 +1,3 @@
-// // import express from "express";
-// // import session from "express-session";
-// // import redisCliend from "./cache/cache";
-
-// // const app = express();
-
-// // app.use(
-// //   session({
-// //     secret: "hello",
-// //     resave: false,
-// //     saveUninitialized: false,
-// //   })
-// // );
-
-// // app.get("/", (req, res) => {
-// //   console.log(req);
-// //   res.send("Hello Se   s   sion");
-// // });
-
-// // app.listen(8080, () => console.log("Server running on http://localhost:8080"));
-
 import express from "express";
 import session from "express-session";
 import bodyParser from "body-parser";
@@ -26,6 +5,7 @@ import cookieParser from "cookie-parser";
 import { redisClient, redisStore } from "./cache/redis";
 import { SESS_SECRET, REDIS_URI } from "./config/config";
 import { userRouter } from "./routes/routes";
+import timeout from "connect-timeout";
 
 let appPort: string;
 process.env.PORT ? (appPort = process.env.PORT) : (appPort = "8080");
@@ -39,6 +19,16 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
 app.set("trust proxy", 1);
+
+app.use(timeout("50s"));
+app.use(haltOnTimedout);
+
+function haltOnTimedout(req: any, res: any, next: any) {
+  if (!req.timedout) next();
+  else {
+    res.status(408).send("timeout");
+  }
+}
 
 app.use(
   session({

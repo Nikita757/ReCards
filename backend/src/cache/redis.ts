@@ -4,7 +4,6 @@ import connectRedis from "connect-redis";
 import { REDIS_URI } from "../config/config";
 
 const redisStore = connectRedis(session);
-console.log(redisStore);
 const redisClient = new Redis(REDIS_URI);
 
 export { redisClient, redisStore };
