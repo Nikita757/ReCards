@@ -8,6 +8,7 @@ export async function login(user: { username: string, password: string }): Promi
             `${API_URL}/login`, user, {
             headers: {
                 "Content-Type": "application/json",
+                "Credentials": true
             }
         });
     } catch (err) {
