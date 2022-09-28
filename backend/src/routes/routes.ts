@@ -5,15 +5,15 @@ import { login, logout, dashboard } from "../controllers/controllers";
 export const userRouter = express.Router();
 
 const CorsOptions = {
-  origin: "http://127.0.0.1:3000",
+  origin: "https://recards.gotsreact.com",
   credentials: true,
-  allowedHeaders: "Cookie",
+  allowedHeaders: "Cookie,Content-Type",
   exposedHeaders: "Set-Cookie",
 };
 
 userRouter.use(cors(CorsOptions));
 
-userRouter.get("/login", login);
+userRouter.post("/login", login);
 
 userRouter.get("/logout", logout);
 
