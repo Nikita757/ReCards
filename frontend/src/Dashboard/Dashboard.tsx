@@ -21,7 +21,7 @@ export function Dashboard() {
     useEffect(() => {
         async function dash() {
             try {
-                const res = await axios.post(`${API_URL}/dashboard`, {});
+                const res = await axios.get(`${API_URL}/dashboard`, {});
                 if (res.status === 200) {
                     console.log(res);
                 }
