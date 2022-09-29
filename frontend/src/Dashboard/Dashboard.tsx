@@ -21,12 +21,7 @@ export function Dashboard() {
     useEffect(() => {
         async function dash() {
             try {
-                const res = await axios.get(`${API_URL}/dashboard`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Credentials": true
-                    }
-                });
+                const res = await axios.get(`${API_URL}/dashboard`, { withCredentials: true });
                 if (res.status === 200) {
                     console.log(res);
                 }
