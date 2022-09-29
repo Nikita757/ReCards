@@ -9,7 +9,7 @@ export function Dashboard() {
         e.preventDefault();
 
         try {
-            const res = await axios.post(`${API_URL}/logout`, {});
+            const res = await axios.post(`${API_URL}/logout`, {}, { withCredentials: true });
             if (res.status === 200) {
                 navigate("/login");
             }
