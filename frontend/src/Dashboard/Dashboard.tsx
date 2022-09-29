@@ -37,7 +37,9 @@ export function Dashboard() {
     return (
         <>
             <h2>Dashboard</h2>
-            <form onSubmit={handleLogout}></form>
+            <form onSubmit={handleLogout}>
+                <button className="submitbutton" type="submit">Logout</button>
+            </form>
         </>
     )
 }
