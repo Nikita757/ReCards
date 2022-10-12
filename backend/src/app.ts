@@ -6,6 +6,9 @@ import { redisClient, redisStore } from "./cache/redis";
 import { SESS_SECRET, REDIS_URI } from "./config/config";
 import { userRouter } from "./routes/routes";
 import timeout from "connect-timeout";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 let appPort: string;
 process.env.PORT ? (appPort = process.env.PORT) : (appPort = "8080");
@@ -36,7 +39,7 @@ app.use(
     store: new redisStore({
       url: REDIS_URI,
       client: redisClient,
-      ttl: 60 * 60 * 24,
+      ttl: 1000 * 60 * 60 * 24,
     }),
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,

@@ -34,11 +34,12 @@ function validPassword(password, hash, salt) {
 }
 function dashboard(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log(req);
         if (!req.session.key) {
             res.send("unauthorized");
             return;
         }
-        res.send("mew");
+        res.send("authorized");
     });
 }
 exports.dashboard = dashboard;

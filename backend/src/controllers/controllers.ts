@@ -20,10 +20,10 @@ async function validPassword(password: string, hash: string, salt: string) {
 
 export async function dashboard(req: any, res: express.Response) {
   if (!req.session.key) {
-    res.send("unauthorized");
+    res.status(401). send("unauthorized");
     return;
   }
-  res.send("mew");
+  res.send("authorized");
 }
 
 export async function login(req: any, res: any) {

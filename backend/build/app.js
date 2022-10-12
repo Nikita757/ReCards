@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -11,6 +34,8 @@ const redis_1 = require("./cache/redis");
 const config_1 = require("./config/config");
 const routes_1 = require("./routes/routes");
 const connect_timeout_1 = __importDefault(require("connect-timeout"));
+const dotenv = __importStar(require("dotenv"));
+dotenv.config();
 let appPort;
 process.env.PORT ? (appPort = process.env.PORT) : (appPort = "8080");
 const app = (0, express_1.default)();
@@ -32,7 +57,7 @@ app.use((0, express_session_1.default)({
     store: new redis_1.redisStore({
         url: config_1.REDIS_URI,
         client: redis_1.redisClient,
-        ttl: 60 * 60 * 24,
+        ttl: 1000 * 60 * 60 * 24,
     }),
     cookie: {
         maxAge: 1000 * 60 * 60 * 24,
