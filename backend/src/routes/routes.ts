@@ -7,6 +7,8 @@ import {
   dashboard,
   createDeck,
   createCard,
+  getDecks,
+  getCards,
 } from "../controllers/controllers";
 
 export const userRouter = express.Router();
@@ -37,5 +39,9 @@ userRouter.get("/dashboard", dashboard);
 userRouter.post("/createDeck", createDeck);
 
 userRouter.post("/createCard", createCard);
+
+userRouter.get("/getDecks", getDecks);
+
+userRouter.get("/getCards", getCards);
 
 export default userRouter;

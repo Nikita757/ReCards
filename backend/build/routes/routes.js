@@ -27,5 +27,7 @@ exports.userRouter.post("/logout", controllers_1.logout);
 exports.userRouter.get("/dashboard", controllers_1.dashboard);
 exports.userRouter.post("/createDeck", controllers_1.createDeck);
 exports.userRouter.post("/createCard", controllers_1.createCard);
+exports.userRouter.get("/getDecks", controllers_1.getDecks);
+exports.userRouter.get("/getCards", controllers_1.getCards);
 exports.default = exports.userRouter;
 //# sourceMappingURL=routes.js.map

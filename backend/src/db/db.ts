@@ -57,7 +57,19 @@ export async function insertCard({
   await client.query(dbQuery, values);
 }
 
-// (async () => {
-//   console.log(await selectUser({ username: "meww" }));
-//   await insertUser({ username: "mew", password: "kis", salt: "lol" });
-// })();
+export async function selectDecks(creator: string) {
+  const dbQuery = "SELECT * from decks WHERE creator=$1";
+  const values = [creator];
+
+  return (await client.query(dbQuery, values)).rows;
+}
+
+export async function selectCards(deck_id: string) {
+  console.log(deck_id);
+  const dbQuery = "SELECT * from cards WHERE deck_id=$1";
+  const values = [deck_id];
+
+  return (await client.query(dbQuery, values)).rows;
+}
+
+(async () => {})();

@@ -1,8 +1,15 @@
 import express from "express";
-import { insertUser, selectUser, insertDeck, insertCard } from "../db/db";
+import {
+  insertUser,
+  selectUser,
+  insertDeck,
+  insertCard,
+  selectDecks,
+  selectCards,
+} from "../db/db";
 import crypto from "crypto";
 
-// Create data validation
+// TODO: Data validation
 
 async function hashPassword(password: string) {
   const salt = crypto.randomBytes(16).toString("hex");
@@ -39,7 +46,6 @@ export async function login(req: any, res: express.Response) {
       username: req.body.username,
     });
 
-    console.log("KEK");
     console.log(await hashPassword(req.body.password));
     if (
       queryResult &&
@@ -130,6 +136,37 @@ export async function createCard(req: any, res: express.Response) {
       deck_id: req.body.deck_id,
     });
     res.status(200).send();
+  } catch (err: any) {
+    res.status(400).send();
+  }
+}
+
+export async function getDecks(req: any, res: express.Response) {
+  if (!req.session.key) {
+    res.status(401).send("unauthorized");
+    return;
+  }
+
+  try {
+    const result = await selectDecks(req.session.key);
+
+    res.status(200).send(result);
+  } catch (err: any) {
+    res.status(400).send();
+  }
+}
+
+export async function getCards(req: any, res: express.Response) {
+  if (!req.body?.deck_id) {
+    res.status(400).send("Body does not contain required data");
+  } else if (!req.session.key) {
+    res.status(401).send("unauthorized");
+    return;
+  }
+
+  try {
+    const result = await selectCards("3");
+    res.status(200).send(result);
   } catch (err: any) {
     res.status(400).send();
   }

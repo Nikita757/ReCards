@@ -12,10 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createCard = exports.createDeck = exports.logout = exports.register = exports.login = exports.dashboard = void 0;
+exports.getCards = exports.getDecks = exports.createCard = exports.createDeck = exports.logout = exports.register = exports.login = exports.dashboard = void 0;
 const db_1 = require("../db/db");
 const crypto_1 = __importDefault(require("crypto"));
-// Create data validation
+// TODO: Data validation
 function hashPassword(password) {
     return __awaiter(this, void 0, void 0, function* () {
         const salt = crypto_1.default.randomBytes(16).toString("hex");
@@ -54,7 +54,6 @@ function login(req, res) {
             const queryResult = yield (0, db_1.selectUser)({
                 username: req.body.username,
             });
-            console.log("KEK");
             console.log(yield hashPassword(req.body.password));
             if (queryResult &&
                 (yield validPassword(req.body.password, queryResult.password, queryResult.salt))) {
@@ -160,4 +159,40 @@ function createCard(req, res) {
     });
 }
 exports.createCard = createCard;
+function getDecks(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!req.session.key) {
+            res.status(401).send("unauthorized");
+            return;
+        }
+        try {
+            const result = yield (0, db_1.selectDecks)(req.session.key);
+            res.status(200).send(result);
+        }
+        catch (err) {
+            res.status(400).send();
+        }
+    });
+}
+exports.getDecks = getDecks;
+function getCards(req, res) {
+    var _a;
+    return __awaiter(this, void 0, void 0, function* () {
+        if (!((_a = req.body) === null || _a === void 0 ? void 0 : _a.deck_id)) {
+            res.status(400).send("Body does not contain required data");
+        }
+        else if (!req.session.key) {
+            res.status(401).send("unauthorized");
+            return;
+        }
+        try {
+            const result = yield (0, db_1.selectCards)("3");
+            res.status(200).send(result);
+        }
+        catch (err) {
+            res.status(400).send();
+        }
+    });
+}
+exports.getCards = getCards;
 //# sourceMappingURL=controllers.js.map

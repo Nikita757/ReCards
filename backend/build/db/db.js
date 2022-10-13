@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.insertCard = exports.insertDeck = exports.selectUser = exports.insertUser = void 0;
+exports.selectCards = exports.selectDecks = exports.insertCard = exports.insertDeck = exports.selectUser = exports.insertUser = void 0;
 const pg_1 = require("pg");
 const config_1 = require("../config/config");
 const client = new pg_1.Client(config_1.DB_URI);
@@ -47,8 +47,22 @@ function insertCard({ question, answer, deck_id, }) {
     });
 }
 exports.insertCard = insertCard;
-// (async () => {
-//   console.log(await selectUser({ username: "meww" }));
-//   await insertUser({ username: "mew", password: "kis", salt: "lol" });
-// })();
+function selectDecks(creator) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const dbQuery = "SELECT * from decks WHERE creator=$1";
+        const values = [creator];
+        return (yield client.query(dbQuery, values)).rows;
+    });
+}
+exports.selectDecks = selectDecks;
+function selectCards(deck_id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log(deck_id);
+        const dbQuery = "SELECT * from cards WHERE deck_id=$1";
+        const values = [deck_id];
+        return (yield client.query(dbQuery, values)).rows;
+    });
+}
+exports.selectCards = selectCards;
+(() => __awaiter(void 0, void 0, void 0, function* () { }))();
 //# sourceMappingURL=db.js.map
