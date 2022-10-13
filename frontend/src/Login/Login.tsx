@@ -1,9 +1,8 @@
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
-import { API_URL } from "../config/config";
-import { usernameSchema, passwordSchema } from "../config/utils/util";
+import { usernameSchema, passwordSchema } from "../utils/util";
+import { login } from "../api";
 
 
 export function Login() {
@@ -13,7 +12,8 @@ export function Login() {
         password: '',
     });
 
-    const [err, setErr] = useState<{ username: boolean; password: boolean }>({
+    const [err, setErr] = useState<{ login: boolean; username: boolean; password: boolean }>({
+        login: false,
         username: false,
         password: false,
     });
@@ -24,21 +24,12 @@ export function Login() {
             return
         }
 
-        try {
-            const res = await axios.post(
-                `${API_URL}/login`, user, {
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            });
-
-            if (res.status === 200) {
-                navigate("/");
-            }
-        } catch (error) {
-            console.log("NET");
+        if (!await login(user)) {
+            setErr({ ...err, login: true });
+            return;
         }
 
+        navigate("/");
     }
 
     function handleUnameChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -90,8 +81,9 @@ export function Login() {
                 />
                 {err.password && <p>Wrong Password</p>}
             </div>
+            {err.login && <p>Invalid Credentials</p>}
             <div className="buttoncontainer">
-                <button className="submitbutton" type="submit">Submit</button>
+                <button className="submitbutton" type="submit" disabled={err.username || err.password}>Submit</button>
                 <button className="submitbutton" type="submit" onClick={() => navigate("/register")}>Register</button>
             </div>
         </form>

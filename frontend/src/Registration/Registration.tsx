@@ -1,11 +1,9 @@
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
-import { API_URL } from "../config/config";
-import { usernameSchema, passwordSchema, emailSchema } from "../config/utils/util";
+import { usernameSchema, passwordSchema, emailSchema } from "../utils/util";
 
 import "./Registration.css"
+import { register } from "../api";
 
 export function Registration() {
     const navigate = useNavigate();
@@ -15,7 +13,8 @@ export function Registration() {
         password: '',
     });
 
-    const [err, setErr] = useState<{ email: boolean; username: boolean; password: boolean }>({
+    const [err, setErr] = useState<{ login: boolean; email: boolean; username: boolean; password: boolean }>({
+        login: false,
         email: false,
         username: false,
         password: false,
@@ -23,24 +22,16 @@ export function Registration() {
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        if (!user.username || !user.password) {
+        if (!user.username || !user.password || !user.email) {
             return
         }
 
-        try {
-            const res = await axios.post(
-                `${API_URL}/register`, user, {
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            });
-
-            if (res.status === 200) {
-                navigate("/");
-            }
-        } catch (err) {
-            console.log("NET");
+        if (!await register(user)) {
+            setErr({ ...err, login: true });
+            return;
         }
+
+        navigate("/");
     }
 
     function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -116,7 +107,7 @@ export function Registration() {
                 {err.password && <p>Wrong Password</p>}
             </div>
             <div className="buttoncontainer">
-                <button className="submitbutton" type="submit">Submit</button>
+                <button className="submitbutton" type="submit" disabled={err.email || err.username || err.password}>Submit</button>
                 <button className="submitbutton" type="submit" onClick={() => navigate("/login")}>Login</button>
             </div>
         </form>

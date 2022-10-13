@@ -7,8 +7,7 @@ export const userRouter = express.Router();
 const CorsOptions = {
   origin: "https://recards.gotsreact.com",
   credentials: true,
-  allowedHeaders:
-    "Cookie,Content-Type,X-Requested-With,X-HTTP-Method-Override,Accept",
+  allowedHeaders: ["Cookie", "Content-Type", "X-Requested-With", "X-HTTP-Method-Override", "Accept"],
   exposedHeaders: "Set-Cookie",
 };
 
