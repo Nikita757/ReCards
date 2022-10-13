@@ -9,15 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.selectUser = exports.insertUser = void 0;
+exports.insertCard = exports.insertDeck = exports.selectUser = exports.insertUser = void 0;
 const pg_1 = require("pg");
 const config_1 = require("../config/config");
 const client = new pg_1.Client(config_1.DB_URI);
 (() => __awaiter(void 0, void 0, void 0, function* () { return yield client.connect(); }))();
-function insertUser({ username, email, password, salt, }) {
+function insertUser({ username, password, salt, }) {
     return __awaiter(this, void 0, void 0, function* () {
-        const dbQuery = "INSERT INTO users(username, email, password, salt) VALUES($1, $2, $3, $4) RETURNING *";
-        const values = [username, email, password, salt];
+        const dbQuery = "INSERT INTO users(username, password, salt) VALUES($1, $2, $3) RETURNING *";
+        const values = [username, password, salt];
         yield client.query(dbQuery, values);
     });
 }
@@ -31,7 +31,24 @@ function selectUser({ username }) {
     });
 }
 exports.selectUser = selectUser;
+function insertDeck({ creator, name, }) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const dbQuery = "INSERT INTO decks(creator, name) VALUES($1, $2) RETURNING *";
+        const values = [creator, name];
+        yield client.query(dbQuery, values);
+    });
+}
+exports.insertDeck = insertDeck;
+function insertCard({ question, answer, deck_id, }) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const dbQuery = "INSERT INTO cards(question, answer, deck_id) VALUES($1, $2, $3) RETURNING *";
+        const values = [question, answer, deck_id];
+        yield client.query(dbQuery, values);
+    });
+}
+exports.insertCard = insertCard;
 // (async () => {
 //   console.log(await selectUser({ username: "meww" }));
+//   await insertUser({ username: "mew", password: "kis", salt: "lol" });
 // })();
 //# sourceMappingURL=db.js.map

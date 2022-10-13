@@ -1,6 +1,8 @@
 import express from "express";
-import { insertUser, selectUser } from "../db/db";
+import { insertUser, selectUser, insertDeck, insertCard } from "../db/db";
 import crypto from "crypto";
+
+// Create data validation
 
 async function hashPassword(password: string) {
   const salt = crypto.randomBytes(16).toString("hex");
@@ -26,57 +28,58 @@ export async function dashboard(req: any, res: express.Response) {
   res.send("authorized");
 }
 
-export async function login(req: any, res: any) {
-  if (req.body?.username && req.body?.password) {
-    try {
-      const queryResult = await selectUser({
-        username: req.body.username,
-      });
-
-      console.log("KEK");
-      console.log(await hashPassword(req.body.password));
-      if (
-        queryResult &&
-        (await validPassword(
-          req.body.password,
-          queryResult.password,
-          queryResult.salt
-        ))
-      ) {
-        console.log("KEK");
-        req.session.key = req.body.username;
-        res.status(200).send();
-      } else {
-        res.status(401).send();
-      }
-    } catch (err: any) {
-      console.log(err);
-      res.status(400).send();
-    }
-  } else {
+export async function login(req: any, res: express.Response) {
+  if (!req.body?.username && req.body?.password) {
     res.status(400).json({ message: "Body does not contain required data" });
+    return;
+  }
+
+  try {
+    const queryResult = await selectUser({
+      username: req.body.username,
+    });
+
+    console.log("KEK");
+    console.log(await hashPassword(req.body.password));
+    if (
+      queryResult &&
+      (await validPassword(
+        req.body.password,
+        queryResult.password,
+        queryResult.salt
+      ))
+    ) {
+      req.session.key = req.body.username;
+      res.status(200).send();
+    } else {
+      res.status(401).send();
+    }
+  } catch (err: any) {
+    console.log(err);
+    res.status(400).send();
   }
 }
 
-export async function register(req: any, res: any) {
-  if (req.body?.username && req.body?.password && req.body?.email) {
-    try {
-      console.log(await hashPassword(req.body.password));
-
-      const { hash, salt } = await hashPassword(req.body.password);
-      await insertUser({
-        username: req.body.username,
-        password: hash,
-        email: req.body.email,
-        salt: salt,
-      });
-      req.session.key = req.body.username;
-      res.status(200).send();
-    } catch (err: any) {
-      res.status(400).send();
-    }
-  } else {
+export async function register(req: any, res: express.Response) {
+  if (!(req.body?.username && req.body?.password)) {
     res.status(400).send("Body does not contain required data");
+    console.log("hello");
+    return;
+  }
+
+  try {
+    console.log(await hashPassword(req.body.password));
+
+    const { hash, salt } = await hashPassword(req.body.password);
+    await insertUser({
+      username: req.body.username,
+      password: hash,
+      salt: salt,
+    });
+    req.session.key = req.body.username;
+    res.status(200).send();
+  } catch (err: any) {
+    res.status(400).send();
   }
 }
 
@@ -93,4 +96,41 @@ export async function logout(req: express.Request, res: express.Response) {
       });
     }
   });
+}
+
+export async function createDeck(req: any, res: express.Response) {
+  if (!req.body?.name) {
+    res.status(400).send("Body does not contain required data");
+    return;
+  } else if (!req.session.key) {
+    res.status(401).send("unauthorized");
+    return;
+  }
+
+  try {
+    await insertDeck({ creator: req.session.key, name: req.body.name });
+    res.status(200).send();
+  } catch (err: any) {
+    res.status(400).send();
+  }
+}
+
+export async function createCard(req: any, res: express.Response) {
+  if (!(req.body?.question && req.body?.answer && req.body?.deck_id)) {
+    res.status(400).send("Body does not contain required data");
+  } else if (!req.session.key) {
+    res.status(401).send("unauthorized");
+    return;
+  }
+
+  try {
+    await insertCard({
+      question: req.body.question,
+      answer: req.body.answer,
+      deck_id: req.body.deck_id,
+    });
+    res.status(200).send();
+  } catch (err: any) {
+    res.status(400).send();
+  }
 }

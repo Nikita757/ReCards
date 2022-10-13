@@ -11,7 +11,13 @@ exports.userRouter = express_1.default.Router();
 const CorsOptions = {
     origin: "https://recards.gotsreact.com",
     credentials: true,
-    allowedHeaders: "Cookie,Content-Type",
+    allowedHeaders: [
+        "Cookie",
+        "Content-Type",
+        "X-Requested-With",
+        "X-HTTP-Method-Override",
+        "Accept",
+    ],
     exposedHeaders: "Set-Cookie",
 };
 exports.userRouter.use((0, cors_1.default)(CorsOptions));
@@ -19,5 +25,7 @@ exports.userRouter.post("/login", controllers_1.login);
 exports.userRouter.post("/register", controllers_1.register);
 exports.userRouter.post("/logout", controllers_1.logout);
 exports.userRouter.get("/dashboard", controllers_1.dashboard);
+exports.userRouter.post("/createDeck", controllers_1.createDeck);
+exports.userRouter.post("/createCard", controllers_1.createCard);
 exports.default = exports.userRouter;
 //# sourceMappingURL=routes.js.map
