@@ -1,9 +1,6 @@
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
-import { API_URL } from "../config/config";
-import { usernameSchema, passwordSchema, emailSchema } from "../config/utils/util";
+import { usernameSchema, passwordSchema, emailSchema } from "../utils/util";
 
 import "./Registration.css"
 import { register } from "../api";
