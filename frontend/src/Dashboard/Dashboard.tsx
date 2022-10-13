@@ -21,7 +21,7 @@ export function Dashboard() {
         try {
             const res = await axios.post(`${API_URL}/logout`, {}, { withCredentials: true });
             if (res.status === 200) {
-                navigate("/login");
+                navigate("/welcome");
             }
         } catch (err) {
             console.log(err);

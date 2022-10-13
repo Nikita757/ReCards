@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400;500;700&display=swap');
+
+html,
+body,
+#root {
+    height: 100%;
+}
+
+body {
+    font-family: 'Mulish', sans-serif;
+    box-sizing: border-box;
+}
+
+.WelcomePage__WelcomeImg {
+    width: 15rem;
+    height: 15rem;
+    margin-top: 1rem;
+}
+
+.WelcomePage__Title {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.Blank {
+    flex: 1;
+}
+
+.WelcomePage__Title__Wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0rem 0 2rem 0;
+}
+
+.WelcomePage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.InfoBlock {
+    color: white;
+    border-radius: 45px 45px 0px 0px;
+    background-color: #2AABEE;
+
+}
+
+.InfoBlock__Wrapper {
+    margin: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.InfoBlock__Title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+.InfoBlock__Description {
+    margin-bottom: 2rem;
+}
+
+.InfoBlock__Buttons__Register {
+    all: unset;
+    padding: 0.5rem 1rem;
+    border: 2px solid #FFEDDA;
+    border-radius: 26.5px;
+}
+
+.InfoBlock__Buttons__Login {
+    all: unset;
+    padding: 0.5rem 1rem;
+    color: #2AABEE;
+    background: #FFFFFF;
+    border: 2px solid white;
+    border-radius: 26.5px;
+}
+
+.InfoBlock__Buttons {
+    display: flex;
+    gap: 2rem;
+}

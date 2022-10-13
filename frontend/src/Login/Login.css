@@ -1,0 +1,60 @@
+.Login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.FormBlock {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.LoginForm {
+    margin: 2rem;
+
+}
+
+.FormInput {
+    all: unset;
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border: 1px solid rgba(60, 60, 67, 0.6);
+    border-radius: 40px;
+    padding: 0.5rem 1rem;
+    width: 100%;
+    color: black;
+}
+
+.FormSubmit {
+    all: unset;
+    box-sizing: border-box;
+    color: #2AABEE;
+    font-weight: 700;
+    text-align: center;
+    width: 100%;
+    background-color: white;
+    border-radius: 40px;
+    padding: 0.5rem 1rem;
+
+}
+
+.InputWrapper {
+    width: 100%;
+
+}
+
+.LoginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.FormBlock {
+    color: white;
+    border-radius: 45px 45px 0px 0px;
+    background-color: #2AABEE;
+
+}
