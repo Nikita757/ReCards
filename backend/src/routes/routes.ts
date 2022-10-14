@@ -36,12 +36,12 @@ userRouter.post("/logout", logout);
 
 userRouter.get("/dashboard", dashboard);
 
-userRouter.post("/createDeck", createDeck);
+userRouter.post("/deck", createDeck);
 
-userRouter.post("/createCard", createCard);
+userRouter.post("/card", createCard);
 
-userRouter.get("/getDecks", getDecks);
+userRouter.get("/deck", getDecks);
 
-userRouter.get("/getCards", getCards);
+userRouter.get("/card", getCards);
 
 export default userRouter;
