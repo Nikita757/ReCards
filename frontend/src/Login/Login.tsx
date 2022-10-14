@@ -68,46 +68,49 @@ export function Login() {
       </div>
       <div className="Blank"></div>
       <div className="FormBlock">
-        <form className="LoginForm" onSubmit={handleSubmit}>
-          <div className="InputWrapper">
-            <input
-              type="text"
-              className="FormInput"
-              id="username"
-              value={user.username}
-              onChange={handleUnameChange}
-              placeholder="Username"
-            />
-            {err.username && <p>Wrong Username</p>}
-          </div>
-          <div className="InputWrapper">
-            <input
-              type="password"
-              className="FormInput"
-              id="password"
-              value={user.password}
-              onChange={handlePwordChange}
-              placeholder="Password"
-            />
-            {err.password && <p>Wrong Password</p>}
-          </div>
-          {err.login && <p>Invalid Credentials</p>}
+        <div className="FormBlock__Wrapper">
+          <div className="FormBlock__Title">Sign In</div>
+          <form className="LoginForm" onSubmit={handleSubmit}>
+            <div className="InputWrapper">
+              <input
+                type="text"
+                className="FormInput"
+                id="username"
+                value={user.username}
+                onChange={handleUnameChange}
+                placeholder="Username"
+              />
+              {err.username && <p>Wrong Username</p>}
+            </div>
+            <div className="InputWrapper">
+              <input
+                type="password"
+                className="FormInput"
+                id="password"
+                value={user.password}
+                onChange={handlePwordChange}
+                placeholder="Password"
+              />
+              {err.password && <p>Wrong Password</p>}
+            </div>
+            {err.login && <p>Invalid Credentials</p>}
 
-          <input
-            className="FormSubmit"
+            <input
+              className="FormSubmit"
+              type="submit"
+              disabled={err.username || err.password}
+              value="Log In"
+            />
+          </form>
+
+          <a
+            className="RegisterRedirect"
             type="submit"
-            disabled={err.username || err.password}
-            value="Log In"
-          />
-        </form>
-
-        <a
-          className="submitbutton"
-          type="submit"
-          onClick={() => navigate("/register")}
-        >
-          Register
-        </a>
+            onClick={() => navigate("/register")}
+          >
+            Already have an account?
+          </a>
+        </div>
       </div>
     </div>
   );
