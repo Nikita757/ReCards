@@ -1,0 +1,19 @@
+.Title {
+    font-size: larger;
+    text-align: center;
+}
+
+.Decks {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+    align-items: center;
+    text-align: center;
+    row-gap: 1rem;
+    border: 1px solid red;
+}
+
+.Deck {
+    width: 100%;
+    border: 1px solid black;
+}
