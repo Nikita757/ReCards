@@ -1,115 +1,145 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { usernameSchema, passwordSchema, emailSchema } from "../utils/util";
 
-import "./Registration.css"
+import "./Registration.css";
 import { register } from "../api";
 
 export function Registration() {
-    const navigate = useNavigate();
-    const [user, setUser] = useState<{ email: string, username: string; password: string }>({
-        email: '',
-        username: '',
-        password: '',
-    });
+  const navigate = useNavigate();
+  const [user, setUser] = useState<{
+    username: string;
+    password: string;
+    repeatPassword: string;
+  }>({
+    username: "",
+    password: "",
+    repeatPassword: "",
+  });
 
-    const [err, setErr] = useState<{ login: boolean; email: boolean; username: boolean; password: boolean }>({
-        login: false,
-        email: false,
-        username: false,
-        password: false,
-    });
+  const [err, setErr] = useState<{
+    login: boolean;
+    username: boolean;
+    password: boolean;
+    repeatPassword: boolean;
+  }>({
+    login: false,
+    username: false,
+    password: false,
+    repeatPassword: false,
+  });
 
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
-        if (!user.username || !user.password || !user.email) {
-            return
-        }
-
-        if (!await register(user)) {
-            setErr({ ...err, login: true });
-            return;
-        }
-
-        navigate("/");
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!user.username || !user.password || !user.repeatPassword) {
+      return;
     }
 
-    function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setUser({ ...user, email: e.target.value });
-        const emailMatchRes = emailSchema.validate(e.target.value);
-        if (emailMatchRes.error) {
-            setErr({ ...err, email: true });
-        } else {
-            setErr({ ...err, email: false });
-        }
+    if (!(await register(user))) {
+      setErr({ ...err, login: true });
+      return;
     }
 
-    function handleUnameChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setUser({ ...user, username: e.target.value });
-        const unameMatchRes = usernameSchema.validate(e.target.value);
-        if (unameMatchRes.error) {
-            setErr({ ...err, username: true });
-        } else {
-            setErr({ ...err, username: false });
-        }
-    }
+    navigate("/");
+  }
 
-    function handlePwordChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setUser({ ...user, password: e.target.value });
-        const pwordMatchRes = passwordSchema.validate(e.target.value);
-        if (pwordMatchRes.error) {
-            setErr({ ...err, password: true });
-        } else {
-            setErr({ ...err, password: false });
-        }
+  function handleRepeatPasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setUser({ ...user, repeatPassword: e.target.value });
+    console.log(user.password);
+    console.log(user.repeatPassword);
+    if (user.password !== e.target.value) {
+      setErr({ ...err, repeatPassword: true });
+    } else {
+      setErr({ ...err, repeatPassword: false });
     }
+  }
 
-    return (
-        <form className="registerform" onSubmit={handleSubmit}>
-            <h5>Register</h5>
-            <div className="formrow">
-                <label htmlFor="email" className="formlabel">
-                    email
-                </label>
-                <input
-                    type="text"
-                    className="forminput"
-                    id="email"
-                    value={user.email}
-                    onChange={handleEmailChange}
-                />
-                {err.email && <p>Wrong Email</p>}
+  function handleUnameChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setUser({ ...user, username: e.target.value });
+    const unameMatchRes = usernameSchema.validate(e.target.value);
+    if (unameMatchRes.error) {
+      setErr({ ...err, username: true });
+    } else {
+      setErr({ ...err, username: false });
+    }
+  }
+
+  function handlePwordChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setUser({ ...user, password: e.target.value });
+    const pwordMatchRes = passwordSchema.validate(e.target.value);
+    if (pwordMatchRes.error) {
+      setErr({ ...err, password: true });
+    } else {
+      setErr({ ...err, password: false });
+    }
+  }
+
+  return (
+    <div className="Registration">
+      <img
+        className="WelcomePage__WelcomeImg"
+        src="welcome.svg"
+        alt="welcome"
+      />
+      <div className="WelcomePage__Title__Wrapper">
+        <div className="WelcomePage__Title">ReCards</div>
+      </div>
+      <div className="Blank"></div>
+      <div className="FormBlock">
+        <div className="FormBlock__Wrapper">
+          <div className="FormBlock__Title">Sign Up</div>
+
+          <form className="RegisterForm" onSubmit={handleSubmit}>
+            <div className="InputWrapper">
+              <input
+                type="text"
+                className="FormInput"
+                id="username"
+                value={user.username}
+                onChange={handleUnameChange}
+                placeholder="Username"
+              />
+              {err.username && <p>Wrong Username</p>}
             </div>
-            <div className="formrow">
-                <label htmlFor="username" className="formlabel">
-                    username
-                </label>
-                <input
-                    type="text"
-                    className="forminput"
-                    id="username"
-                    value={user.username}
-                    onChange={handleUnameChange}
-                />
-                {err.username && <p>Wrong Username</p>}
+            <div className="InputWrapper">
+              <input
+                type="password"
+                className="FormInput"
+                id="password"
+                value={user.password}
+                onChange={handlePwordChange}
+                placeholder="Password"
+              />
+              {err.password && <p>Wrong Password</p>}
+            </div>{" "}
+            <div className="InputWrapper">
+              <input
+                type="password"
+                className="FormInput"
+                id="repeatPassword"
+                value={user.repeatPassword}
+                onChange={handleRepeatPasswordChange}
+                placeholder="Repeat password"
+              />
+              {err.repeatPassword && <p>Passwords does not match</p>}
             </div>
-            <div className="formrow">
-                <label htmlFor="password" className="formlabel">
-                    password
-                </label>
-                <input
-                    type="text"
-                    className="forminput"
-                    id="password"
-                    value={user.password}
-                    onChange={handlePwordChange}
-                />
-                {err.password && <p>Wrong Password</p>}
-            </div>
-            <div className="buttoncontainer">
-                <button className="submitbutton" type="submit" disabled={err.email || err.username || err.password}>Submit</button>
-                <button className="submitbutton" type="submit" onClick={() => navigate("/login")}>Login</button>
-            </div>
-        </form>
-    )
+            <input
+              className="FormSubmit"
+              type="submit"
+              disabled={err.repeatPassword || err.username || err.password}
+              value="Sign Up"
+            />
+          </form>
+
+          <a
+            className="RegisterRedirect"
+            type="submit"
+            onClick={() => navigate("/login")}
+          >
+            Already have an account?
+          </a>
+        </div>
+      </div>
+    </div>
+  );
 }

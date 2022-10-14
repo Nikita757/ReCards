@@ -99,16 +99,15 @@ export function Login() {
               className="FormSubmit"
               type="submit"
               disabled={err.username || err.password}
-              value="Log In"
+              value="Sing In"
             />
           </form>
-
           <a
             className="RegisterRedirect"
             type="submit"
             onClick={() => navigate("/register")}
           >
-            Already have an account?
+            Don't have an account?
           </a>
         </div>
       </div>
