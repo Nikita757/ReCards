@@ -1,7 +1,9 @@
 import { Client } from "pg";
-import { DB_URI } from "../config/config";
+import * as dotenv from "dotenv";
 
-const client = new Client(DB_URI);
+dotenv.config();
+
+const client = new Client(process.env.DB_URI);
 (async () => await client.connect())();
 
 export async function insertUser({

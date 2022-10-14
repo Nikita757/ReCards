@@ -3,7 +3,6 @@ import session from "express-session";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import { redisClient, redisStore } from "./cache/redis";
-import { SESS_SECRET, REDIS_URI } from "./config/config";
 import { userRouter } from "./routes/routes";
 import timeout from "connect-timeout";
 import * as dotenv from "dotenv";
@@ -35,9 +34,9 @@ function haltOnTimedout(req: any, res: any, next: any) {
 
 app.use(
   session({
-    secret: SESS_SECRET,
+    secret: process.env.SESS_SECRET!,
     store: new redisStore({
-      url: REDIS_URI,
+      url: process.env.REDIS_URI,
       client: redisClient,
       ttl: 1000 * 60 * 60 * 24,
     }),
@@ -45,7 +44,7 @@ app.use(
       maxAge: 1000 * 60 * 60 * 24,
       httpOnly: true,
       secure: true,
-      sameSite: "none"
+      sameSite: "none",
     },
     saveUninitialized: false,
     resave: false,
